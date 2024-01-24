@@ -296,18 +296,18 @@ portal:
     # -- (string) Overrides the image tag whose default is the chart appVersion.
     tag:
   # -- (map) GitOps configuration for portal
-gitops:
-  # -- (string) multiline string - gitops.json
-  json:
-  # -- (string) - favicon in base64
-  favicon:
-  # -- (string) - multiline string - gitops.css
-  css:
-  # -- (string) - logo in base64
-  logo:
-  # -- (string) - createdby.png - base64
-  createdby:
-  sponsors:
+  gitops:
+    # -- (string) multiline string - gitops.json
+    json:
+    # -- (string) - favicon in base64
+    favicon:
+    # -- (string) - multiline string - gitops.css
+    css:
+    # -- (string) - logo in base64
+    logo:
+    # -- (string) - createdby.png - base64
+    createdby:
+    sponsors:
 
 
 requestor:
