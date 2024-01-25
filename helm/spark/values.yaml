@@ -8,7 +8,7 @@ image:
   repository: quay.io/cdis/gen3-spark
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "2021.03"
+  tag: "stable"
   # tag: "fix_spark-master-host"
 
 imagePullSecrets: []
