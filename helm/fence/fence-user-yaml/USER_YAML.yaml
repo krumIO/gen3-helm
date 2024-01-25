@@ -691,6 +691,7 @@ users:
     - auth_id: wakeTHREE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
   0000-0001-5359-1703: # vithal
+    admin: true
     policies:
     - open_data_admin
     - data_upload
@@ -711,6 +712,7 @@ users:
     - auth_id: wakeTHREE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
   Vithal.madhira@palilasoftware.com:
+    admin: true
     policies:
     - open_data_admin
     - data_upload
