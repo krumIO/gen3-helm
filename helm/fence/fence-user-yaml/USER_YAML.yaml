@@ -704,6 +704,9 @@ users:
     - programs.wake-admin
     - indexd_admin
     - ttyadmin
+    - services.sheepdog-admin
+    - services.peregrine-admin
+    - programs.krum-admin
     projects:
     - auth_id: wakeONE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
@@ -725,6 +728,9 @@ users:
     - programs.wake-admin
     - indexd_admin
     - ttyadmin
+    - services.sheepdog-admin
+    - services.peregrine-admin
+    - programs.krum-admin
     projects:
     - auth_id: wakeONE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
