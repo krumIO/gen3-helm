@@ -235,6 +235,11 @@ authz:
                 - name: 'ONE'
                 - name: 'TWO'
                 - name: 'THREE'
+        - name: 'rutgers'
+          subresources:
+            - name: 'projects'
+              subresources:
+                - name: 'rutgers'
         - name: 'krum'
           subresources:
             - name: 'projects'
@@ -247,6 +252,11 @@ authz:
       subresources:
         - name: 'programs'
           subresources:
+            - name: 'rutgers'
+              subresources:
+                - name: 'projects'
+                  subresources:
+                    - name: 'rutgers'
             - name: 'sim'
               subresources:
                 - name: 'projects'
