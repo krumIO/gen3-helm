@@ -18,6 +18,7 @@ authz:
   # policies automatically given to authenticated users (in addition to their other policies)
   all_users_policies: ['open_data_reader']
   user_project_to_resource:
+    rutgers: /programs/rutgers
     sim: /programs/sim
     GEN: /programs/sim/projects/GEN
     krumUNO: /programs/krum/projects/UNO
@@ -119,6 +120,16 @@ authz:
       resource_paths:
         - '/programs/sim'
         - '/gen3/programs/sim'
+    - id: 'programs.rutgers-admin'
+      description: ''
+      role_ids:
+        - 'creator'
+        - 'reader'
+        - 'updater'
+        - 'deleter'
+        - 'storage_reader'
+      resource_paths:
+        - '/programs/rutgers'
     - id: 'programs.krum-admin'
       description: ''
       role_ids:
@@ -707,6 +718,7 @@ users:
     - services.sheepdog-admin
     - services.peregrine-admin
     - programs.krum-admin
+    - programs.rutgers-admin
     projects:
     - auth_id: wakeONE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
@@ -714,6 +726,9 @@ users:
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: wakeTHREE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: rutgers
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+
   Vithal.madhira@palilasoftware.com:
     admin: true
     policies:
@@ -731,6 +746,7 @@ users:
     - services.sheepdog-admin
     - services.peregrine-admin
     - programs.krum-admin
+    - programs.rutgers-admin
     projects:
     - auth_id: wakeONE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
@@ -738,6 +754,9 @@ users:
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: wakeTHREE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: rutgers
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+
   0000-0002-3969-4279: # meredith
     policies:
     - open_data_admin
