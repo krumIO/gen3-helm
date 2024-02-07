@@ -1,0 +1,28 @@
+# Default values for neuvector-policies.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+
+nameOverride: ""
+fullnameOverride: ""
+
+
+# hostname/service name for our DB
+DB_HOST: development-gen3-postgresql
+
+# Prefix for relevant services deployed through Argo
+ARGOCD_PREFIX: development-gen3
+
+# Neuvector policy enforcement mode
+# dev: Monitor
+# prod: Protect
+POLICY_MODE: Monitor # Protect
+
+ingress:
+  # service name of your ingress controller
+  controller: nginx-ingress-controller
+  # installation namespace of your ingress controller
+  namespace: nginx
+  # classname of your ingress
+  class: nginx

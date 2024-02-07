@@ -1,0 +1,30 @@
+apiVersion: neuvector.com/v1
+kind: NvSecurityRule
+metadata:
+  name: nv.sower.{{ .Release.Namespace }}
+spec:
+  dlp:
+    settings: []
+    status: true
+  egress: []
+  file: []
+  ingress: []
+  process: []
+  process_profile:
+    baseline: zero-drift
+  target:
+    policymode: {{ .Values.POLICY_MODE }}
+    selector:
+      comment: ""
+      criteria:
+      - key: service
+        op: =
+        value: sower.{{ .Release.Namespace }}
+      - key: domain
+        op: =
+        value: {{ .Release.Namespace }}
+      name: nv.sower.{{ .Release.Namespace }}
+      original_name: ""
+  waf:
+    settings: []
+    status: true

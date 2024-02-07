@@ -104,6 +104,10 @@ dependencies:
   version: "0.1.4"
   repository: "file://../spark"
   condition: spark.enabled
+- name: neuvectorPolicies
+  version: "0.1.0"
+  repository: "file://../neuvector-policies"
+  condition: neuvectorPolicies.enabled
 
 
 - name: elasticsearch

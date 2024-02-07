@@ -399,3 +399,7 @@ elasticsearch:
   esConfig:
     elasticsearch.yml: |
       # Here we can add elasticsearch config
+
+
+neuvectorPolicies:
+  enabled: false
