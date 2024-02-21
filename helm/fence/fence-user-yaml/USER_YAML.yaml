@@ -594,8 +594,8 @@ users:
     - sower
     - indexd_admin
     - ttyadmin
-    - services.sheepdog-admin
-    - services.peregrine-admin
+    # - services.sheepdog-admin
+    # - services.peregrine-admin
     - programs.rutgers-admin
     projects:
     - auth_id: rutgers
