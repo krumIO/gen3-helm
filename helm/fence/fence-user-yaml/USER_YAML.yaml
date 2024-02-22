@@ -583,6 +583,7 @@ users:
     - auth_id: krumTRES
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
   0009-0001-0547-0015: # hunter
+    admin: false
     policies:
     - open_data_admin
     - data_upload
@@ -591,13 +592,13 @@ users:
     - mds_admin
     - prometheus
     - sower
-    - programs.sim-admin
     - indexd_admin
     - ttyadmin
+    # - services.sheepdog-admin
+    # - services.peregrine-admin
+    - programs.rutgers-admin
     projects:
-    - auth_id: GEN
-      privilege: [create, read, update, delete, upload, read-storage. write-storage]
-    - auth_id: sim
+    - auth_id: rutgers
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
   hunter@krum.io:
     admin: true
@@ -712,7 +713,7 @@ users:
     - auth_id: wakeTHREE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
   0000-0001-5359-1703: # vithal
-    admin: true
+    admin: false
     policies:
     - open_data_admin
     - data_upload
@@ -721,21 +722,12 @@ users:
     - mds_admin
     - prometheus
     - sower
-    - programs.sim-admin
-    - programs.wake-admin
     - indexd_admin
     - ttyadmin
-    - services.sheepdog-admin
-    - services.peregrine-admin
-    - programs.krum-admin
+    # - services.sheepdog-admin
+    # - services.peregrine-admin
     - programs.rutgers-admin
     projects:
-    - auth_id: wakeONE
-      privilege: [create, read, update, delete, upload, read-storage. write-storage]
-    - auth_id: wakeTWO
-      privilege: [create, read, update, delete, upload, read-storage. write-storage]
-    - auth_id: wakeTHREE
-      privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: rutgers
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
 
