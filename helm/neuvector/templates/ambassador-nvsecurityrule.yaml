@@ -1,7 +1,8 @@
+{{- if .Values.policies.include }}
 apiVersion: neuvector.com/v1
 kind: NvSecurityRule
 metadata:
-  name: nv.peregrine-deployment.{{ .Release.Namespace }}
+  name: nv.ambassador-deployment.{{ .Release.Namespace }}
 spec:
   dlp:
     settings: []
@@ -10,7 +11,7 @@ spec:
   - action: allow
     applications:
     - DNS
-    name: nv.kube-dns.kube-system-egress-23
+    name: nv.kube-dns.kube-system-egress-0
     ports: any
     priority: 0
     selector:
@@ -27,25 +28,7 @@ spec:
   - action: allow
     applications:
     - SSL
-    name: nv.revproxy-deployment.{{ .Release.Namespace }}-egress-24
-    ports: any
-    priority: 0
-    selector:
-      comment: ""
-      criteria:
-      - key: service
-        op: =
-        value: revproxy-deployment.{{ .Release.Namespace }}
-      - key: domain
-        op: =
-        value: {{ .Release.Namespace }}
-      name: nv.revproxy-deployment.{{ .Release.Namespace }}
-      original_name: ""
-  - action: allow
-    applications:
-    - HTTP
-    - SSL
-    name: external-egress-25
+    name: external-egress-1
     ports: any
     priority: 0
     selector:
@@ -53,30 +36,12 @@ spec:
       criteria: []
       name: external
       original_name: ""
-  - action: allow
-    applications:
-    - HTTP
-    - SSL
-    name: nv.{{ .Values.ingress.controller }}.{{ .Values.ingress.namespace }}-egress-26
-    ports: any
-    priority: 0
-    selector:
-      comment: ""
-      criteria:
-      - key: service
-        op: =
-        value: {{ .Values.ingress.controller }}.{{ .Values.ingress.namespace }}
-      - key: domain
-        op: =
-        value: {{ .Values.ingress.class }}
-      name: nv.{{ .Values.ingress.controller }}.{{ .Values.ingress.namespace }}
-      original_name: ""
   file: []
   ingress:
   - action: allow
     applications:
     - HTTP
-    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-57
+    name: nv.ambassador-deployment.{{ .Release.Namespace }}-ingress-6
     ports: any
     priority: 0
     selector:
@@ -85,8 +50,8 @@ spec:
       original_name: ""
   - action: allow
     applications:
-    - HTTP
-    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-58
+    - SSL
+    name: nv.ambassador-deployment.{{ .Release.Namespace }}-ingress-7
     ports: any
     priority: 0
     selector:
@@ -94,16 +59,16 @@ spec:
       criteria:
       - key: service
         op: =
-        value: pidgin-deployment.{{ .Release.Namespace }}
+        value: hatchery-deployment.{{ .Release.Namespace }}
       - key: domain
         op: =
         value: {{ .Release.Namespace }}
-      name: nv.pidgin-deployment.{{ .Release.Namespace }}
+      name: nv.hatchery-deployment.{{ .Release.Namespace }}
       original_name: ""
   - action: allow
     applications:
     - SSL
-    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-59
+    name: nv.ambassador-deployment.{{ .Release.Namespace }}-ingress-8
     ports: any
     priority: 0
     selector:
@@ -114,7 +79,7 @@ spec:
   - action: allow
     applications:
     - HTTP
-    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-60
+    name: nv.ambassador-deployment.{{ .Release.Namespace }}-ingress-9
     ports: any
     priority: 0
     selector:
@@ -131,126 +96,117 @@ spec:
   - action: allow
     applications:
     - any
-    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-61
-    ports: tcp/80
-    priority: 0
-    selector:
-      comment: ""
-      name: Workload:ingress
-      original_name: ""
-  - action: allow
-    applications:
-    - HTTP
-    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-62
-    ports: any
+    name: nv.ambassador-deployment.{{ .Release.Namespace }}-ingress-10
+    ports: tcp/8080
     priority: 0
     selector:
       comment: ""
       criteria:
       - key: service
         op: =
-        value: portal-deployment.{{ .Release.Namespace }}
+        value: revproxy-deployment.{{ .Release.Namespace }}
       - key: domain
         op: =
         value: {{ .Release.Namespace }}
-      name: nv.portal-deployment.{{ .Release.Namespace }}
+      name: nv.revproxy-deployment.{{ .Release.Namespace }}
       original_name: ""
   process:
   - action: allow
     allow_update: false
-    name: basename
-    path: /usr/bin/basename
+    name: ambex
+    path: /opt/ambassador/bin/ambassador
   - action: allow
     allow_update: false
-    name: cat
-    path: /bin/cat
+    name: bash
+    path: /bin/bash
   - action: allow
     allow_update: false
-    name: chmod
-    path: /bin/chmod
+    name: busybox
+    path: /bin/busybox
   - action: allow
     allow_update: false
-    name: dash
-    path: /bin/dash
+    name: curl
+    path: /usr/bin/curl
   - action: allow
     allow_update: false
-    name: dockerrun.sh
-    path: /bin/dash
+    name: date
+    path: /bin/busybox
+  - action: allow
+    allow_update: false
+    name: diagd
+    path: /usr/bin/python3.7
+  - action: allow
+    allow_update: false
+    name: env
+    path: /bin/busybox
+  - action: allow
+    allow_update: false
+    name: envoy
+    path: /usr/local/bin/envoy
   - action: allow
     allow_update: false
     name: find
-    path: /usr/bin/find
+    path: /bin/busybox
   - action: allow
     allow_update: false
     name: grep
-    path: /bin/grep
+    path: /bin/busybox
   - action: allow
     allow_update: false
     name: mkdir
-    path: /bin/mkdir
-  - action: allow
-    allow_update: false
-    name: mktemp
-    path: /bin/mktemp
-  - action: allow
-    allow_update: false
-    name: mv
-    path: /bin/mv
-  - action: allow
-    allow_update: false
-    name: nginx
-    path: /usr/sbin/nginx
+    path: /bin/busybox
   - action: allow
     allow_update: false
     name: pause
     path: /pause
   - action: allow
     allow_update: false
-    name: readlink
-    path: /bin/readlink
+    name: python
+    path: /usr/bin/python3.7
   - action: allow
     allow_update: false
-    name: rm
-    path: /bin/rm
-  - action: allow
-    allow_update: false
-    name: run-parts
-    path: /bin/run-parts
-  - action: allow
-    allow_update: false
-    name: sed
-    path: /bin/sed
+    name: python3
+    path: /usr/bin/python3.7
   - action: allow
     allow_update: false
     name: sh
-    path: /bin/dash
+    path: /bin/busybox
+  - action: allow
+    allow_update: false
+    name: sleep
+    path: /bin/busybox
   - action: allow
     allow_update: false
     name: sort
-    path: /usr/bin/sort
+    path: /bin/busybox
   - action: allow
     allow_update: false
-    name: uwsgi
-    path: /usr/local/bin/uwsgi
+    name: uname
+    path: /bin/busybox
+  - action: allow
+    allow_update: false
+    name: watt
+    path: /opt/ambassador/bin/ambassador
   - action: allow
     allow_update: false
     name: wc
-    path: /usr/bin/wc
+    path: /bin/busybox
   process_profile:
     baseline: zero-drift
   target:
-    policymode: {{ .Values.POLICY_MODE }}
+    policymode: {{ .Values.policies.policyMode }}
     selector:
       comment: ""
       criteria:
       - key: service
         op: =
-        value: peregrine-deployment.{{ .Release.Namespace }}
+        value: ambassador-deployment.{{ .Release.Namespace }}
       - key: domain
         op: =
         value: {{ .Release.Namespace }}
-      name: nv.peregrine-deployment.{{ .Release.Namespace }}
+      name: nv.ambassador-deployment.{{ .Release.Namespace }}
       original_name: ""
   waf:
     settings: []
     status: true
+{{- end }}

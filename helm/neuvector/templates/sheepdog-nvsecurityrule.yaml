@@ -1,7 +1,8 @@
+{{- if .Values.policies.include }}
 apiVersion: neuvector.com/v1
 kind: NvSecurityRule
 metadata:
-  name: nv.wts-deployment.{{ .Release.Namespace }}
+  name: nv.sheepdog-deployment.{{ .Release.Namespace }}
 spec:
   dlp:
     settings: []
@@ -10,7 +11,7 @@ spec:
   - action: allow
     applications:
     - DNS
-    name: nv.kube-dns.kube-system-egress-2
+    name: nv.kube-dns.kube-system-egress-37
     ports: any
     priority: 0
     selector:
@@ -27,53 +28,8 @@ spec:
   - action: allow
     applications:
     - HTTP
-    name: nv.fence-deployment.{{ .Release.Namespace }}-egress-3
-    ports: any
-    priority: 0
-    selector:
-      comment: ""
-      criteria:
-      - key: service
-        op: =
-        value: fence-deployment.{{ .Release.Namespace }}
-      - key: domain
-        op: =
-        value: {{ .Release.Namespace }}
-      name: nv.fence-deployment.{{ .Release.Namespace }}
-      original_name: ""
-  - action: allow
-    applications:
-    - PostgreSQL
-    name: nv.{{ .Values.DB_HOST }}.{{ .Release.Namespace }}-egress-4
-    ports: any
-    priority: 0
-    selector:
-      comment: ""
-      criteria:
-      - key: service
-        op: =
-        value: {{ .Values.DB_HOST }}.{{ .Release.Namespace }}
-      - key: domain
-        op: =
-        value: {{ .Release.Namespace }}
-      name: nv.{{ .Values.DB_HOST }}.{{ .Release.Namespace }}
-      original_name: ""
-  file: []
-  ingress:
-  - action: allow
-    applications:
-    - any
-    name: nv.wts-deployment.{{ .Release.Namespace }}-ingress-11
-    ports: tcp/80
-    priority: 0
-    selector:
-      comment: ""
-      name: Workload:ingress
-      original_name: ""
-  - action: allow
-    applications:
     - SSL
-    name: nv.wts-deployment.{{ .Release.Namespace }}-ingress-12
+    name: external-egress-38
     ports: any
     priority: 0
     selector:
@@ -84,7 +40,8 @@ spec:
   - action: allow
     applications:
     - HTTP
-    name: nv.wts-deployment.{{ .Release.Namespace }}-ingress-13
+    - SSL
+    name: nv.{{ .Values.ingress.controller }}.{{ .Values.ingress.namespace }}-egress-39
     ports: any
     priority: 0
     selector:
@@ -92,31 +49,44 @@ spec:
       criteria:
       - key: service
         op: =
-        value: revproxy-deployment.{{ .Release.Namespace }}
+        value: {{ .Values.ingress.controller }}.{{ .Values.ingress.namespace }}
       - key: domain
         op: =
-        value: {{ .Release.Namespace }}
-      name: nv.revproxy-deployment.{{ .Release.Namespace }}
+        value: {{ .Values.ingress.class }}
+      name: nv.{{ .Values.ingress.controller }}.{{ .Values.ingress.namespace }}
       original_name: ""
+  file: []
+  ingress:
   - action: allow
     applications:
     - HTTP
-    name: nv.wts-deployment.{{ .Release.Namespace }}-ingress-14
+    name: nv.sheepdog-deployment.{{ .Release.Namespace }}-ingress-74
     ports: any
     priority: 0
     selector:
       comment: ""
       name: Workload:ingress
       original_name: ""
-  process:
   - action: allow
-    allow_update: false
-    name: alembic
-    path: /usr/local/bin/python3.9
+    applications:
+    - SSL
+    name: nv.sheepdog-deployment.{{ .Release.Namespace }}-ingress-75
+    ports: any
+    priority: 0
+    selector:
+      comment: ""
+      criteria: []
+      name: external
+      original_name: ""
+  process:
   - action: allow
     allow_update: false
     name: basename
     path: /usr/bin/basename
+  - action: allow
+    allow_update: false
+    name: bash
+    path: /bin/bash
   - action: allow
     allow_update: false
     name: chmod
@@ -129,6 +99,10 @@ spec:
     allow_update: false
     name: find
     path: /usr/bin/find
+  - action: allow
+    allow_update: false
+    name: ldconfig
+    path: /sbin/ldconfig
   - action: allow
     allow_update: false
     name: mkdir
@@ -145,6 +119,14 @@ spec:
     allow_update: false
     name: pause
     path: /pause
+  - action: allow
+    allow_update: false
+    name: python
+    path: /usr/local/bin/python3.6
+  - action: allow
+    allow_update: false
+    name: python3
+    path: /usr/local/bin/python3.6
   - action: allow
     allow_update: false
     name: readlink
@@ -171,6 +153,10 @@ spec:
     path: /usr/bin/sort
   - action: allow
     allow_update: false
+    name: uname
+    path: /bin/uname
+  - action: allow
+    allow_update: false
     name: uwsgi
     path: /usr/local/bin/uwsgi
   - action: allow
@@ -180,18 +166,19 @@ spec:
   process_profile:
     baseline: zero-drift
   target:
-    policymode: {{ .Values.POLICY_MODE }}
+    policymode: {{ .Values.policies.policyMode }}
     selector:
       comment: ""
       criteria:
       - key: service
         op: =
-        value: wts-deployment.{{ .Release.Namespace }}
+        value: sheepdog-deployment.{{ .Release.Namespace }}
       - key: domain
         op: =
         value: {{ .Release.Namespace }}
-      name: nv.wts-deployment.{{ .Release.Namespace }}
+      name: nv.sheepdog-deployment.{{ .Release.Namespace }}
       original_name: ""
   waf:
     settings: []
     status: true
+{{- end }}

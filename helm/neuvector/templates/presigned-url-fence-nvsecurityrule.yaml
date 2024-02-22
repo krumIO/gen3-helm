@@ -1,7 +1,8 @@
+{{- if .Values.policies.include }}
 apiVersion: neuvector.com/v1
 kind: NvSecurityRule
 metadata:
-  name: nv.indexd-deployment.{{ .Release.Namespace }}
+  name: nv.presigned-url-fence-deployment.{{ .Release.Namespace }}
 spec:
   dlp:
     settings: []
@@ -9,8 +10,30 @@ spec:
   egress:
   - action: allow
     applications:
+    - any
+    name: nodes-egress-32
+    ports: tcp/8126
+    priority: 0
+    selector:
+      comment: ""
+      criteria: []
+      name: nodes
+      original_name: ""
+  - action: allow
+    applications:
+    - SSL
+    name: external-egress-33
+    ports: any
+    priority: 0
+    selector:
+      comment: ""
+      criteria: []
+      name: external
+      original_name: ""
+  - action: allow
+    applications:
     - DNS
-    name: nv.kube-dns.kube-system-egress-20
+    name: nv.kube-dns.kube-system-egress-34
     ports: any
     priority: 0
     selector:
@@ -29,63 +52,26 @@ spec:
   - action: allow
     applications:
     - HTTP
-    name: nv.indexd-deployment.{{ .Release.Namespace }}-ingress-49
+    name: nv.presigned-url-fence-deployment.{{ .Release.Namespace }}-ingress-67
     ports: any
     priority: 0
     selector:
       comment: ""
       name: Workload:ingress
       original_name: ""
-  - action: allow
-    applications:
-    - SSL
-    name: nv.indexd-deployment.{{ .Release.Namespace }}-ingress-50
-    ports: any
-    priority: 0
-    selector:
-      comment: ""
-      criteria: []
-      name: external
-      original_name: ""
-  - action: allow
-    applications:
-    - HTTP
-    name: nv.indexd-deployment.{{ .Release.Namespace }}-ingress-51
-    ports: any
-    priority: 0
-    selector:
-      comment: ""
-      criteria:
-      - key: service
-        op: =
-        value: revproxy-deployment.{{ .Release.Namespace }}
-      - key: domain
-        op: =
-        value: {{ .Release.Namespace }}
-      name: nv.revproxy-deployment.{{ .Release.Namespace }}
-      original_name: ""
-  - action: allow
-    applications:
-    - HTTP
-    name: nv.indexd-deployment.{{ .Release.Namespace }}-ingress-52
-    ports: any
-    priority: 0
-    selector:
-      comment: ""
-      criteria:
-      - key: service
-        op: =
-        value: sheepdog-deployment.{{ .Release.Namespace }}
-      - key: domain
-        op: =
-        value: {{ .Release.Namespace }}
-      name: nv.sheepdog-deployment.{{ .Release.Namespace }}
-      original_name: ""
   process:
+  - action: allow
+    allow_update: false
+    name: basename
+    path: /usr/bin/basename
   - action: allow
     allow_update: false
     name: bash
     path: /bin/bash
+  - action: allow
+    allow_update: false
+    name: cat
+    path: /bin/cat
   - action: allow
     allow_update: false
     name: chmod
@@ -96,12 +82,24 @@ spec:
     path: /bin/chown
   - action: allow
     allow_update: false
-    name: dockerrun.sh
-    path: /bin/dash
+    name: ddtrace-run
+    path: /usr/local/bin/python3.9
+  - action: allow
+    allow_update: false
+    name: find
+    path: /usr/bin/find
+  - action: allow
+    allow_update: false
+    name: ldconfig
+    path: /sbin/ldconfig
   - action: allow
     allow_update: false
     name: mkdir
     path: /bin/mkdir
+  - action: allow
+    allow_update: false
+    name: mktemp
+    path: /bin/mktemp
   - action: allow
     allow_update: false
     name: mv
@@ -116,6 +114,14 @@ spec:
     path: /pause
   - action: allow
     allow_update: false
+    name: pip
+    path: /usr/local/bin/python3.9
+  - action: allow
+    allow_update: false
+    name: readlink
+    path: /bin/readlink
+  - action: allow
+    allow_update: false
     name: rm
     path: /bin/rm
   - action: allow
@@ -124,27 +130,44 @@ spec:
     path: /bin/run-parts
   - action: allow
     allow_update: false
+    name: sed
+    path: /bin/sed
+  - action: allow
+    allow_update: false
     name: sh
     path: /bin/dash
   - action: allow
     allow_update: false
+    name: sort
+    path: /usr/bin/sort
+  - action: allow
+    allow_update: false
+    name: uname
+    path: /bin/uname
+  - action: allow
+    allow_update: false
     name: uwsgi
     path: /usr/local/bin/uwsgi
+  - action: allow
+    allow_update: false
+    name: wc
+    path: /usr/bin/wc
   process_profile:
     baseline: zero-drift
   target:
-    policymode: {{ .Values.POLICY_MODE }}
+    policymode: {{ .Values.policies.policyMode }}
     selector:
       comment: ""
       criteria:
       - key: service
         op: =
-        value: indexd-deployment.{{ .Release.Namespace }}
+        value: presigned-url-fence-deployment.{{ .Release.Namespace }}
       - key: domain
         op: =
         value: {{ .Release.Namespace }}
-      name: nv.indexd-deployment.{{ .Release.Namespace }}
+      name: nv.presigned-url-fence-deployment.{{ .Release.Namespace }}
       original_name: ""
   waf:
     settings: []
     status: true
+{{- end }}

@@ -1,3 +1,4 @@
+{{- if .Values.policies.include }}
 apiVersion: neuvector.com/v1
 kind: NvClusterSecurityRule
 metadata:
@@ -126,3 +127,4 @@ spec:
   waf:
     settings: []
     status: true
+{{- end }}

@@ -401,5 +401,23 @@ elasticsearch:
       # Here we can add elasticsearch config
 
 
-neuvectorPolicies:
+neuvector:
+  # install Neuvector
   enabled: false
+  policies:
+    # deploy predefined Neuvector policies for Gen3
+    include: false
+    # Discover, Monitor, or Protect
+    policyMode: Monitor
+  # Configure your ingress controller information for enabling ingress to containers
+  ingress:
+    # service name of your ingress controller
+    controller: nginx-ingress-controller
+    # installation namespace of your ingress controller
+    namespace: nginx
+    # classname of your ingress
+    class: nginx
+  # Required to allow egress to in-cluster database or external, managed database
+  DB_HOST: development-gen3-postgresql
+
+

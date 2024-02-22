@@ -1,3 +1,4 @@
+{{- if .Values.policies.include }}
 apiVersion: neuvector.com/v1
 kind: NvSecurityRule
 metadata:
@@ -13,7 +14,7 @@ spec:
   process_profile:
     baseline: zero-drift
   target:
-    policymode: {{ .Values.POLICY_MODE }}
+    policymode: {{ .Values.policies.policyMode }}
     selector:
       comment: ""
       criteria:
@@ -28,3 +29,4 @@ spec:
   waf:
     settings: []
     status: true
+{{- end }}

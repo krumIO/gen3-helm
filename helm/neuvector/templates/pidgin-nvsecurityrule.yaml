@@ -1,7 +1,8 @@
+{{- if .Values.policies.include }}
 apiVersion: neuvector.com/v1
 kind: NvSecurityRule
 metadata:
-  name: nv.presigned-url-fence-deployment.{{ .Release.Namespace }}
+  name: nv.pidgin-deployment.{{ .Release.Namespace }}
 spec:
   dlp:
     settings: []
@@ -9,30 +10,8 @@ spec:
   egress:
   - action: allow
     applications:
-    - any
-    name: nodes-egress-32
-    ports: tcp/8126
-    priority: 0
-    selector:
-      comment: ""
-      criteria: []
-      name: nodes
-      original_name: ""
-  - action: allow
-    applications:
-    - SSL
-    name: external-egress-33
-    ports: any
-    priority: 0
-    selector:
-      comment: ""
-      criteria: []
-      name: external
-      original_name: ""
-  - action: allow
-    applications:
     - DNS
-    name: nv.kube-dns.kube-system-egress-34
+    name: nv.kube-dns.kube-system-egress-27
     ports: any
     priority: 0
     selector:
@@ -51,7 +30,7 @@ spec:
   - action: allow
     applications:
     - HTTP
-    name: nv.presigned-url-fence-deployment.{{ .Release.Namespace }}-ingress-67
+    name: nv.pidgin-deployment.{{ .Release.Namespace }}-ingress-63
     ports: any
     priority: 0
     selector:
@@ -65,32 +44,24 @@ spec:
     path: /usr/bin/basename
   - action: allow
     allow_update: false
-    name: bash
-    path: /bin/bash
-  - action: allow
-    allow_update: false
-    name: cat
-    path: /bin/cat
-  - action: allow
-    allow_update: false
     name: chmod
     path: /bin/chmod
   - action: allow
     allow_update: false
-    name: chown
-    path: /bin/chown
+    name: dash
+    path: /bin/dash
   - action: allow
     allow_update: false
-    name: ddtrace-run
-    path: /usr/local/bin/python3.9
+    name: dockerrun.sh
+    path: /bin/dash
   - action: allow
     allow_update: false
     name: find
     path: /usr/bin/find
   - action: allow
     allow_update: false
-    name: ldconfig
-    path: /sbin/ldconfig
+    name: grep
+    path: /bin/grep
   - action: allow
     allow_update: false
     name: mkdir
@@ -111,10 +82,6 @@ spec:
     allow_update: false
     name: pause
     path: /pause
-  - action: allow
-    allow_update: false
-    name: pip
-    path: /usr/local/bin/python3.9
   - action: allow
     allow_update: false
     name: readlink
@@ -141,10 +108,6 @@ spec:
     path: /usr/bin/sort
   - action: allow
     allow_update: false
-    name: uname
-    path: /bin/uname
-  - action: allow
-    allow_update: false
     name: uwsgi
     path: /usr/local/bin/uwsgi
   - action: allow
@@ -154,18 +117,19 @@ spec:
   process_profile:
     baseline: zero-drift
   target:
-    policymode: {{ .Values.POLICY_MODE }}
+    policymode: {{ .Values.policies.policyMode }}
     selector:
       comment: ""
       criteria:
       - key: service
         op: =
-        value: presigned-url-fence-deployment.{{ .Release.Namespace }}
+        value: pidgin-deployment.{{ .Release.Namespace }}
       - key: domain
         op: =
         value: {{ .Release.Namespace }}
-      name: nv.presigned-url-fence-deployment.{{ .Release.Namespace }}
+      name: nv.pidgin-deployment.{{ .Release.Namespace }}
       original_name: ""
   waf:
     settings: []
     status: true
+{{- end }}

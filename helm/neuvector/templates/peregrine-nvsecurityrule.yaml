@@ -1,7 +1,8 @@
+{{- if .Values.policies.include }}
 apiVersion: neuvector.com/v1
 kind: NvSecurityRule
 metadata:
-  name: nv.sheepdog-deployment.{{ .Release.Namespace }}
+  name: nv.peregrine-deployment.{{ .Release.Namespace }}
 spec:
   dlp:
     settings: []
@@ -10,7 +11,7 @@ spec:
   - action: allow
     applications:
     - DNS
-    name: nv.kube-dns.kube-system-egress-37
+    name: nv.kube-dns.kube-system-egress-23
     ports: any
     priority: 0
     selector:
@@ -26,9 +27,26 @@ spec:
       original_name: ""
   - action: allow
     applications:
+    - SSL
+    name: nv.revproxy-deployment.{{ .Release.Namespace }}-egress-24
+    ports: any
+    priority: 0
+    selector:
+      comment: ""
+      criteria:
+      - key: service
+        op: =
+        value: revproxy-deployment.{{ .Release.Namespace }}
+      - key: domain
+        op: =
+        value: {{ .Release.Namespace }}
+      name: nv.revproxy-deployment.{{ .Release.Namespace }}
+      original_name: ""
+  - action: allow
+    applications:
     - HTTP
     - SSL
-    name: external-egress-38
+    name: external-egress-25
     ports: any
     priority: 0
     selector:
@@ -40,7 +58,7 @@ spec:
     applications:
     - HTTP
     - SSL
-    name: nv.{{ .Values.ingress.controller }}.{{ .Values.ingress.namespace }}-egress-39
+    name: nv.{{ .Values.ingress.controller }}.{{ .Values.ingress.namespace }}-egress-26
     ports: any
     priority: 0
     selector:
@@ -59,7 +77,7 @@ spec:
   - action: allow
     applications:
     - HTTP
-    name: nv.sheepdog-deployment.{{ .Release.Namespace }}-ingress-74
+    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-57
     ports: any
     priority: 0
     selector:
@@ -68,14 +86,75 @@ spec:
       original_name: ""
   - action: allow
     applications:
+    - HTTP
+    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-58
+    ports: any
+    priority: 0
+    selector:
+      comment: ""
+      criteria:
+      - key: service
+        op: =
+        value: pidgin-deployment.{{ .Release.Namespace }}
+      - key: domain
+        op: =
+        value: {{ .Release.Namespace }}
+      name: nv.pidgin-deployment.{{ .Release.Namespace }}
+      original_name: ""
+  - action: allow
+    applications:
     - SSL
-    name: nv.sheepdog-deployment.{{ .Release.Namespace }}-ingress-75
+    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-59
     ports: any
     priority: 0
     selector:
       comment: ""
       criteria: []
       name: external
+      original_name: ""
+  - action: allow
+    applications:
+    - HTTP
+    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-60
+    ports: any
+    priority: 0
+    selector:
+      comment: ""
+      criteria:
+      - key: service
+        op: =
+        value: revproxy-deployment.{{ .Release.Namespace }}
+      - key: domain
+        op: =
+        value: {{ .Release.Namespace }}
+      name: nv.revproxy-deployment.{{ .Release.Namespace }}
+      original_name: ""
+  - action: allow
+    applications:
+    - any
+    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-61
+    ports: tcp/80
+    priority: 0
+    selector:
+      comment: ""
+      name: Workload:ingress
+      original_name: ""
+  - action: allow
+    applications:
+    - HTTP
+    name: nv.peregrine-deployment.{{ .Release.Namespace }}-ingress-62
+    ports: any
+    priority: 0
+    selector:
+      comment: ""
+      criteria:
+      - key: service
+        op: =
+        value: portal-deployment.{{ .Release.Namespace }}
+      - key: domain
+        op: =
+        value: {{ .Release.Namespace }}
+      name: nv.portal-deployment.{{ .Release.Namespace }}
       original_name: ""
   process:
   - action: allow
@@ -84,12 +163,16 @@ spec:
     path: /usr/bin/basename
   - action: allow
     allow_update: false
-    name: bash
-    path: /bin/bash
+    name: cat
+    path: /bin/cat
   - action: allow
     allow_update: false
     name: chmod
     path: /bin/chmod
+  - action: allow
+    allow_update: false
+    name: dash
+    path: /bin/dash
   - action: allow
     allow_update: false
     name: dockerrun.sh
@@ -100,12 +183,16 @@ spec:
     path: /usr/bin/find
   - action: allow
     allow_update: false
-    name: ldconfig
-    path: /sbin/ldconfig
+    name: grep
+    path: /bin/grep
   - action: allow
     allow_update: false
     name: mkdir
     path: /bin/mkdir
+  - action: allow
+    allow_update: false
+    name: mktemp
+    path: /bin/mktemp
   - action: allow
     allow_update: false
     name: mv
@@ -118,14 +205,6 @@ spec:
     allow_update: false
     name: pause
     path: /pause
-  - action: allow
-    allow_update: false
-    name: python
-    path: /usr/local/bin/python3.6
-  - action: allow
-    allow_update: false
-    name: python3
-    path: /usr/local/bin/python3.6
   - action: allow
     allow_update: false
     name: readlink
@@ -152,10 +231,6 @@ spec:
     path: /usr/bin/sort
   - action: allow
     allow_update: false
-    name: uname
-    path: /bin/uname
-  - action: allow
-    allow_update: false
     name: uwsgi
     path: /usr/local/bin/uwsgi
   - action: allow
@@ -165,18 +240,19 @@ spec:
   process_profile:
     baseline: zero-drift
   target:
-    policymode: {{ .Values.POLICY_MODE }}
+    policymode: {{ .Values.policies.policyMode }}
     selector:
       comment: ""
       criteria:
       - key: service
         op: =
-        value: sheepdog-deployment.{{ .Release.Namespace }}
+        value: peregrine-deployment.{{ .Release.Namespace }}
       - key: domain
         op: =
         value: {{ .Release.Namespace }}
-      name: nv.sheepdog-deployment.{{ .Release.Namespace }}
+      name: nv.peregrine-deployment.{{ .Release.Namespace }}
       original_name: ""
   waf:
     settings: []
     status: true
+{{- end }}
