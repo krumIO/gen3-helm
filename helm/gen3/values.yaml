@@ -400,7 +400,6 @@ elasticsearch:
     elasticsearch.yml: |
       # Here we can add elasticsearch config
 
-
 neuvector:
   # install Neuvector
   enabled: false
@@ -419,5 +418,3 @@ neuvector:
     class: nginx
   # Required to allow egress to in-cluster database or external, managed database
   DB_HOST: development-gen3-postgresql
-
-
