@@ -158,7 +158,7 @@ spec:
                 - name: ES_INDEX_NAME
                   value: dev_etl
                 - name: HADOOP_URL
-                  value: hdfs://spark-service:9000
+                  value: hdfs://localhost:9000
                 - name: HADOOP_HOST
                   value: spark-service
                 - name: HADOOP_CLIENT_OPTS
