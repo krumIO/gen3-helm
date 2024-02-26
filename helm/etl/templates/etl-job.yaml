@@ -268,7 +268,23 @@ spec:
                   cp /tube/hdfs-site.xml /hadoop/etc/hadoop/hdfs-site.xml
 
                   echo "python run_config.py && python run_etl.py"
-                  python run_config.py && python run_etl.py
+                  python run_config.py
+
+                  VERSION=v4.35.2
+                  BINARY=yq_linux_amd64
+                  wget https://github.com/mikefarah/yq/releases/download/${VERSION}/${BINARY}.tar.gz -O - |\
+                    tar xz && mv ${BINARY} /usr/bin/yq
+
+                  n=$(yq eval '.mappings | length' < /gen3/tube/etlMapping.yaml)
+                  echo $n
+                  for ((i = 0 ; i <=$(($n + 0)) ; i++)); 
+                  do
+                    echo $i
+                    echo "$(yq eval ".mappings |= .[$(($i - 1)):$i]" < /gen3/tube/etlMapping.yaml)" > /gen3/tube/etl_current.yaml
+                    cat /gen3/tube/etl_current.yaml
+                    python run_etl.py -s transform
+                  done
+
                   exitcode=$?
                   
                   # Kill sidecar and all processes

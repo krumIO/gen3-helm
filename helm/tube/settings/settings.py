@@ -70,7 +70,7 @@ HADOOP_HOST = os.getenv("HADOOP_HOST", "spark-service")
 # Searches same folders as load_json above
 
 # we break the mappings up and process them individually to reduce the memory requirements of our container
-MAPPING_FILE = find_paths("etlMapping.yaml", "tube")[0]
+MAPPING_FILE = find_paths("etl_current.yaml", "tube")[0]
 try:
     USERYAML_FILE = find_paths("user.yaml", "tube")[0]
 except IndexError:
