@@ -82,10 +82,17 @@ spec:
               args: 
                 - "-c"
                 - |
-                  trap 'exit 0' SIGINT SIGQUIT SIGTERM
+                  # trap 'exit 0' SIGINT SIGQUIT SIGTERM
                   # get /usr/local/share/ca-certificates/cdis-ca.crt into system bundle
-                  ssh server sudo /etc/init.d/ssh start
-                  # update-ca-certificates
+                  ssh-keygen -t ed25519 -N '' -f /root/.ssh/id_ed25519 <<<y >/dev/null 2>&1
+                  cat /root/.ssh/id_ed25519.pub >> /root/.ssh/authorized_keys
+                  cat /tmp/sparkssh/authorized_keys >> /root/.ssh/authorized_keys
+                  service ssh start
+                  /usr/sbin/sshd -D
+                  update-ca-certificates
+                  cp /gen3spark/yarn-site.xml /hadoop/etc/hadoop/yarn-site.xml
+                  cp /gen3spark/hdfs-site.xml /hadoop/etc/hadoop/hdfs-site.xml
+                  cp /gen3spark/mapred-site.xml /hadoop/etc/hadoop/mapred-site.xml
                   python run_config.py
                   hdfs namenode -format
                   hdfs --daemon start namenode
@@ -96,7 +103,8 @@ spec:
                   hdfs dfs -mkdir /result
                   hdfs dfs -mkdir /jars
                   hdfs dfs -mkdir /archive
-                  /spark/sbin/start-all.sh
+                  /bin/bash /spark/sbin/start-all.sh
+                  mapred historyserver
                   while true; do sleep 5; done
             - name: tube
               imagePullPolicy: IfNotPresent
