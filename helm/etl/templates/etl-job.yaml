@@ -77,12 +77,7 @@ spec:
                   readOnly: true
               imagePullPolicy: {{ .Values.image.spark.pullPolicy }}
               resources:
-                requests:
-                  cpu: {{  .Values.resources.spark.requests.cpu }}
-                  memory: {{ .Values.resources.spark.requests.memory }}
-                # limits:
-                #   cpu: {{ .Values.resources.spark.limits.cpu }}
-                #   memory: {{ .Values.resources.spark.limits.memory }}
+                {{- toYaml .Values.resources.spark | nindent 16 }}
               command: ["/bin/bash" ]
               args: 
                 - "-c"
@@ -173,21 +168,24 @@ spec:
                 # Volume to signal when to kill spark
                 - mountPath: /usr/share/pod
                   name: signal-volume
-                - name: "etl-mapping"
+                - name: etl-mapping
+                  readOnly: true
+                  mountPath: "/tube/tube/settings.py"
+                  subPath: settings.py
+                - name: etl-mapping
+                  readOnly: true
+                  mountPath: "/gen3/tube/settings.py"
+                  subPath: settings.py
+                - name: etl-mapping
                   readOnly: true
                   mountPath: "/gen3/tube/etlMapping.yaml"
-                  subPath: "etlMapping.yaml"
+                  subPath: etlMapping.yaml
                 - name: "fence-yaml"
                   readOnly: true
                   mountPath: "/gen3/tube/user.yaml"
                   subPath: useryaml
               resources:
-                requests:
-                  cpu: {{  .Values.resources.tube.requests.cpu }}
-                  memory: {{ .Values.resources.tube.requests.memory }}
-                # limits:
-                #   cpu: {{ .Values.resources.tube.limits.cpu }}
-                #   memory: {{ .Values.resources.tube.limits.memory }}
+                {{- toYaml .Values.resources.tube | nindent 16 }}
               command: ["/bin/bash"]
               args:
                 - "-c"
