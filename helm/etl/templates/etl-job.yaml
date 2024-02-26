@@ -269,6 +269,7 @@ spec:
 
                   echo "python run_config.py && python run_etl.py"
                   python run_config.py
+                  python run_etl.py -s import
 
                   VERSION=v4.35.2
                   BINARY=yq_linux_amd64
