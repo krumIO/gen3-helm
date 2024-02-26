@@ -27,10 +27,10 @@ are/hadoop/tools/lib</value>
 
     <property>
         <name>mapreduce.jobhistory.address</name>
-        <value>spark-service:10020</value>
+        <value>localhost:10020</value>
     </property>
     <property>
         <name>mapreduce.jobhistory.webapp.address</name>
-        <value>spark-service:19888</value>
+        <value>localhost:19888</value>
     </property>
 </configuration>

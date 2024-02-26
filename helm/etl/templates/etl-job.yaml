@@ -160,7 +160,7 @@ spec:
                 - name: HADOOP_URL
                   value: hdfs://localhost:9000
                 - name: HADOOP_HOST
-                  value: spark-service
+                  value: localhost
                 - name: HADOOP_CLIENT_OPTS
                   value: -Xmx1g
                 - name: SPARK_EXECUTOR_MEMORY
