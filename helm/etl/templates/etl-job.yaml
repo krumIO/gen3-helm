@@ -40,12 +40,21 @@ spec:
             - name: creds-volume
               secret:
                 secretName: "peregrine-dbcreds"
+            - name: sshd-config
+              configMap:
+                name: sshd-config
+            - name: ssh-pubkey
+              secret:
+                secretName: ssh-pubkey
             - name: etl-mapping
               configMap:
                 name: etl-mapping
-            - name: fence-yaml
+            - name: useryaml
               configMap:
                 name: useryaml
+            - name: hadoop
+              configMap:
+                name: tube-hadoop-config
           containers:
             - name: gen3-spark
               image: {{ .Values.image.spark.repository }}:{{ .Values.image.spark.tag }}
@@ -55,26 +64,55 @@ spec:
               - containerPort: 8030
               - containerPort: 8031
               - containerPort: 8032
+              - containerPort: 8080
+              - containerPort: 8081
               - containerPort: 7077
+              - containerPort: 9870
+              - containerPort: 8088
+              - containerPort: 8042
+              - containerPort: 8044
+              - containerPort: 50070
+              - containerPort: 10020
+              - containerPort: 19888
               readinessProbe:
                 tcpSocket:
                   port: 9000
                 initialDelaySeconds: 10
                 periodSeconds: 30
               env:
-              - name: DICTIONARY_URL
-                valueFrom:
-                  configMapKeyRef:
-                    name: manifest-global
-                    key: dictionary_url
               - name: HADOOP_URL
                 value: hdfs://0.0.0.0:9000
               - name: HADOOP_HOST
                 value: 0.0.0.0
+              - name: HADOOP_YARN_HOME
+                value: /hadoop
+              - name: YARN_HOME
+                value: /hadoop
+              - name: JAVA_HOME
+                value: /usr/lib/jvm/java-8-openjdk-amd64/
+              - name: HADOOP_OPTS
+                value: "${HADOOP_OPTS} --add-modules java.activation"
               volumeMounts:
-                - mountPath: /usr/share/pod
-                  name: signal-volume
-                  readOnly: true
+              - name: sshd-config
+                mountPath: /etc/ssh/sshd_config
+                subPath: sshd_config
+                readOnly: false
+              - name: sshd-config
+                mountPath: /gen3spark/yarn-site.xml
+                subPath: yarn-site.xml
+                readOnly: false
+              - name: sshd-config
+                mountPath: /gen3spark/hdfs-site.xml
+                subPath: hdfs-site.xml
+                readOnly: false
+              - name: sshd-config
+                mountPath: /gen3spark/mapred-site.xml
+                subPath: mapred-site.xml
+                readOnly: false
+              - name: ssh-pubkey
+                mountPath: /tmp/sparkssh/authorized_keys
+                subPath: authorized_keys
+                readOnly: true
               imagePullPolicy: {{ .Values.image.spark.pullPolicy }}
               resources:
                 {{- toYaml .Values.resources.spark | nindent 16 }}
@@ -113,61 +151,67 @@ spec:
               ports:
                 - containerPort: 80
               env:
-                - name: DB_HOST
-                  valueFrom:
-                    secretKeyRef:
-                      name: peregrine-dbcreds
-                      key: host
-                - name: DB_DATABASE
-                  valueFrom:
-                    secretKeyRef:
-                      name: sheepdog-dbcreds
-                      key: database
-                - name: DB_USERNAME
-                  valueFrom:
-                    secretKeyRef:
-                      name: sheepdog-dbcreds
-                      key: username
-                - name: DB_PASSWORD
-                  valueFrom:
-                    secretKeyRef:
-                      name: sheepdog-dbcreds
-                      key: password
-                - name: DB_PORT
-                  valueFrom:
-                    secretKeyRef:
-                      name: sheepdog-dbcreds
-                      key: port
                 - name: DICTIONARY_URL
-                  valueFrom:
-                    configMapKeyRef:
-                      name: manifest-global
-                      key: dictionary_url
-                - name: HADOOP_URL
-                  value: hdfs://localhost:9000
+                  value: http://revproxy-service/dictionary_schema
                 - name: ES_URL
-                  value: {{ .Values.esEndpoint  }}
+                  value: gen3-elasticsearch-master
+                - name: ES_INDEX_NAME
+                  value: dev_etl
+                - name: HADOOP_URL
+                  value: hdfs://spark-service:9000
                 - name: HADOOP_HOST
-                  value: localhost
+                  value: spark-service
                 - name: HADOOP_CLIENT_OPTS
                   value: -Xmx1g
                 - name: SPARK_EXECUTOR_MEMORY
                   value: 4g
                 - name: SPARK_DRIVER_MEMORY
                   value: 6g
-                - name: ETL_FORCED
-                  value: "TRUE"
-                - name: gen3Env
+                - name: PGHOST
                   valueFrom:
-                    configMapKeyRef:
-                      name: manifest-global
-                      key: hostname
-                - name: slackWebHook
+                    secretKeyRef:
+                      name: sheepdog-dbcreds
+                      key: host
+                      optional: false
+                - name: PGPORT
                   valueFrom:
-                    configMapKeyRef:
-                      name: global
-                      key: slack_webhook
-                      optional: true
+                    secretKeyRef:
+                      name: sheepdog-dbcreds
+                      key: port
+                      optional: false  
+                - name: PGUSER
+                  value: postgres
+                - name: PGPASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: {{ .Values.global.postgres.existingSecret | default (printf "%s-postgresql" .Release.Name) }}
+                      key: postgres-password
+                      optional: false
+                - name: PGDB
+                  valueFrom:
+                    secretKeyRef:
+                      name: sheepdog-dbcreds
+                      key: database
+                      optional: false
+                - name: DBREADY
+                  valueFrom:
+                    secretKeyRef:
+                      name: sheepdog-dbcreds
+                      key: dbcreated
+                      optional: false
+                # - name: ETL_FORCED
+                #   value: "TRUE"
+                # - name: gen3Env
+                #   valueFrom:
+                #     configMapKeyRef:
+                #       name: manifest-global
+                #       key: hostname
+                # - name: slackWebHook
+                #   valueFrom:
+                #     configMapKeyRef:
+                #       name: global
+                #       key: slack_webhook
+                #       optional: true
               volumeMounts:
                 # - name: "creds-volume"
                 #   readOnly: true
@@ -188,10 +232,21 @@ spec:
                   readOnly: true
                   mountPath: "/gen3/tube/etlMapping.yaml"
                   subPath: etlMapping.yaml
-                - name: "fence-yaml"
-                  readOnly: true
+                - name: useryaml
                   mountPath: "/gen3/tube/user.yaml"
                   subPath: useryaml
+                - name: hadoop
+                  mountPath: /tube/yarn-site.xml
+                  subPath: yarn-site.xml
+                  readOnly: false
+                - name: hadoop
+                  mountPath: /tube/mapred-site.xml
+                  subPath: mapred-site.xml
+                  readOnly: false
+                - name: hadoop
+                  mountPath: /tube/hdfs-site.xml
+                  subPath: hdfs-site.xml
+                  readOnly: false
               resources:
                 {{- toYaml .Values.resources.tube | nindent 16 }}
               command: ["/bin/bash"]
@@ -205,6 +260,12 @@ spec:
 
                   # Port 9000 is open, continue with the rest of the script
                   echo "Port 9000 is now open. Continuing with the script..."
+
+                  ssh-keygen -t ed25519 -N '' -f /root/.ssh/id_ed25519 <<<y >/dev/null 2>&1
+                  cat /root/.ssh/id_ed25519.pub
+                  cp /tube/yarn-site.xml /hadoop/etc/hadoop/yarn-site.xml
+                  cp /tube/mapred-site.xml /hadoop/etc/hadoop/mapred-site.xml
+                  cp /tube/hdfs-site.xml /hadoop/etc/hadoop/hdfs-site.xml
 
                   echo "python run_config.py && python run_etl.py"
                   python run_config.py && python run_etl.py
