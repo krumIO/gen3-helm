@@ -44,7 +44,7 @@ spec:
   - action: allow
     applications:
     - PostgreSQL
-    name: nv.development-gen3-postgresql.{{ .Release.Namespace }}-egress-2
+    name: nv.{{ .Values.DB_HOST }}.{{ .Release.Namespace }}-egress-2
     ports: any
     priority: 0
     selector:
@@ -52,11 +52,11 @@ spec:
       criteria:
       - key: service
         op: =
-        value: development-gen3-postgresql.{{ .Release.Namespace }}
+        value: {{ .Values.DB_HOST }}.{{ .Release.Namespace }}
       - key: domain
         op: =
         value: {{ .Release.Namespace }}
-      name: nv.development-gen3-postgresql.{{ .Release.Namespace }}
+      name: nv.{{ .Values.DB_HOST }}.{{ .Release.Namespace }}
       original_name: ""
   - action: allow
     applications:
@@ -335,11 +335,11 @@ spec:
       criteria:
       - key: service
         op: regex
-        value: etl-cronjob-.*\.gen3-development
+        value: etl-cronjob-.*\.{{ .Release.Namespace }}
       - key: domain
         op: =
         value: {{ .Release.Namespace }}
-      name: etl-cronjob.gen3-development
+      name: etl-cronjob.{{ .Release.Namespace }}
       original_name: ""
   waf:
     settings: []
