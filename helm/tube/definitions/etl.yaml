@@ -301,18 +301,18 @@ mappings:
           - name: iammatch
           - name: iamscore
           - name: iamsuitable
-          - name: sdminclude
-          - name: sdmlisten
-          - name: sdmscore
-          - name: sdmunderstand
-        nested_props:
-          - name: collaborate_shared_decision_making_surveys
-            path: collaborate_shared_decision_making_surveys
-            props:
-              - name: sdminclude
-              - name: sdmlisten 
-              - name: sdmscore 
-              - name: sdmunderstand
+        #   - name: sdminclude
+        #   - name: sdmlisten
+        #   - name: sdmscore
+        #   - name: sdmunderstand
+        # nested_props:
+        #   - name: collaborate_shared_decision_making_surveys
+        #     path: collaborate_shared_decision_making_surveys
+        #     props:
+        #       - name: sdminclude
+        #       - name: sdmlisten 
+        #       - name: sdmscore 
+        #       - name: sdmunderstand
     parent_props:
       - path: provider_baselines[provider_baseline_id:submitter_id]
         relation: "1-1"
