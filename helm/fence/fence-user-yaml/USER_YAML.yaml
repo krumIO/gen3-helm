@@ -18,6 +18,7 @@ authz:
   # policies automatically given to authenticated users (in addition to their other policies)
   all_users_policies: ['open_data_reader']
   user_project_to_resource:
+    IMPOWR: /programs/IMPOWR
     rutgers: /programs/rutgers
     sim: /programs/sim
     GEN: /programs/sim/projects/GEN
@@ -130,6 +131,16 @@ authz:
         - 'storage_reader'
       resource_paths:
         - '/programs/rutgers'
+    - id: 'programs.IMPOWR-admin'
+      description: ''
+      role_ids:
+        - 'creator'
+        - 'reader'
+        - 'updater'
+        - 'deleter'
+        - 'storage_reader'
+      resource_paths:
+        - '/programs/IMPOWR'
     - id: 'programs.krum-admin'
       description: ''
       role_ids:
@@ -240,6 +251,12 @@ authz:
             - name: 'projects'
               subresources:
                 - name: 'rutgers'
+        - name: 'IMPOWR'
+          subresources:
+            - name: 'projects'
+              subresources:
+                - name: 'rutgers'
+                - name: 'hopkins'
         - name: 'krum'
           subresources:
             - name: 'projects'
@@ -257,6 +274,12 @@ authz:
                 - name: 'projects'
                   subresources:
                     - name: 'rutgers'
+            - name: 'IMPOWR'
+              subresources:
+                - name: 'projects'
+                  subresources:
+                    - name: 'rutgers'
+                    - name: 'hopkins'
             - name: 'sim'
               subresources:
                 - name: 'projects'
@@ -597,7 +620,10 @@ users:
     # - services.sheepdog-admin
     # - services.peregrine-admin
     - programs.rutgers-admin
+    - programs.IMPOWR-admin
     projects:
+    - auth_id: IMPOWR
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: rutgers
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
   hunter@krum.io:
@@ -727,7 +753,10 @@ users:
     # - services.sheepdog-admin
     # - services.peregrine-admin
     - programs.rutgers-admin
+    - programs.IMPOWR-admin
     projects:
+    - auth_id: IMPOWR
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: rutgers
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
 
@@ -749,12 +778,15 @@ users:
     - services.peregrine-admin
     - programs.krum-admin
     - programs.rutgers-admin
+    - programs.IMPOWR-admin
     projects:
     - auth_id: wakeONE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: wakeTWO
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: wakeTHREE
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: IMPOWR
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: rutgers
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
