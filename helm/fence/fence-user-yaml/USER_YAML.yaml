@@ -16,7 +16,7 @@ authz:
   # policies automatically given to anyone, even if they haven't authenticated
   anonymous_policies: ['open_data_reader']
   # policies automatically given to authenticated users (in addition to their other policies)
-  all_users_policies: ['open_data_reader']
+  all_users_policies: ['open_data_reader', 'programs.sim-reader']
   user_project_to_resource:
     IMPOWR: /programs/IMPOWR
     sim: /programs/sim
@@ -116,6 +116,14 @@ authz:
         - 'reader'
         - 'updater'
         - 'deleter'
+        - 'storage_reader'
+      resource_paths:
+        - '/programs/sim'
+        - '/gen3/programs/sim'
+    - id: 'programs.sim-reader'
+      description: ''
+      role_ids:
+        - 'reader'
         - 'storage_reader'
       resource_paths:
         - '/programs/sim'
@@ -772,6 +780,7 @@ users:
     - sower
     - programs.sim-admin
     - programs.wake-admin
+    - programs.IMPOWR-admin
     - indexd_admin
     - ttyadmin
     projects:
@@ -792,6 +801,7 @@ users:
     - sower
     - programs.sim-admin
     - programs.wake-admin
+    - programs.IMPOWR-admin
     - indexd_admin
     - ttyadmin
     projects:
