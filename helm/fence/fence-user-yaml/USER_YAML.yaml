@@ -249,6 +249,10 @@ authz:
               subresources:
                 - name: 'rutgers'
                 - name: 'hopkins'
+                - name: 'me'
+                - name: 'you'
+                - name: 'treetop'
+                - name: 'nm'
         - name: 'krum'
           subresources:
             - name: 'projects'
@@ -267,6 +271,10 @@ authz:
                   subresources:
                     - name: 'rutgers'
                     - name: 'hopkins'
+                    - name: 'me'
+                    - name: 'you'
+                    - name: 'treetop'
+                    - name: 'nm'
             - name: 'sim'
               subresources:
                 - name: 'projects'
@@ -644,6 +652,10 @@ users:
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: krumTRES
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
+  colin@krum.io:
+      policies:
+      - workspace
+      - dashboard
   0009-0003-4127-2213: # mlperkin
     policies:
     - open_data_admin
