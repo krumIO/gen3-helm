@@ -11,6 +11,7 @@ authz:
     users:
     - hunter@krum.io
     - stephen@krum.io
+    - david@krum.io
     - Vithal.madhira@palilasoftware.com
     - Meredith.Adams@wakehealth.edu
   # policies automatically given to anyone, even if they haven't authenticated
@@ -21,6 +22,8 @@ authz:
     IMPOWR: /programs/IMPOWR
     sim: /programs/sim
     GEN: /programs/sim/projects/GEN
+    DEV: /programs/sim
+    test: /programs/sim/projects/test
     krumUNO: /programs/krum/projects/UNO
     krumDOS: /programs/krum/projects/DOS
     krumTRES: /programs/krum/projects/TRES
@@ -128,6 +131,17 @@ authz:
       resource_paths:
         - '/programs/sim'
         - '/gen3/programs/sim'
+    - id: 'programs.dev-admin'
+      description: ''
+      role_ids:
+        - 'creator'
+        - 'reader'
+        - 'updater'
+        - 'deleter'
+        - 'storage_reader'
+      resource_paths:
+        - '/programs/DEV'
+        - '/gen3/programs/DEV'
     - id: 'programs.IMPOWR-admin'
       description: ''
       role_ids:
@@ -231,6 +245,11 @@ authz:
     # OLD Data
     - name: 'programs'
       subresources:
+        - name: 'DEV'
+          subresources:
+            - name: 'projects'
+              subresources:
+                - name: 'test'
         - name: 'sim'
           subresources:
             - name: 'projects'
@@ -280,6 +299,11 @@ authz:
                 - name: 'projects'
                   subresources:
                     - name: 'GEN'
+            - name: 'DEV'
+              subresources:
+                - name: 'projects'
+                  subresources:
+                    - name: 'test'
     # "Sheepdog admin" resources
     - name: 'services'
       subresources:
@@ -639,6 +663,43 @@ users:
     - auth_id: GEN
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: sim
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: wakeONE
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: wakeTWO
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: wakeTHREE
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: krumUNO
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: krumDOS
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: krumTRES
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+  david@krum.io:
+    admin: true
+    policies:
+    - open_data_admin
+    - data_upload
+    - workspace
+    - dashboard
+    - mds_admin
+    - prometheus
+    - sower
+    - services.sheepdog-admin
+    - services.peregrine-admin
+    - programs.sim-admin
+    - programs.krum-admin
+    - programs.wake-admin
+    - programs.dev-admin
+    - indexd_admin
+    - ttyadmin
+    projects:
+    - auth_id: GEN
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: sim
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: DEV
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: wakeONE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
