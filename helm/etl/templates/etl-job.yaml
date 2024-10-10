@@ -272,10 +272,11 @@ spec:
 
                   echo "python run_config.py && python run_etl.py"
                   python run_config.py
-                  cp /gen3/tube/etlMapping.yaml /gen3/tube/etl_current.yaml
+                  cp -r /gen3/tube/etlMapping.yaml /gen3/tube/etl_current.yaml
                   python run_etl.py -s import
 
                   python run_etl.py -s transform
+                  
 
                   exitcode=$?
                   
