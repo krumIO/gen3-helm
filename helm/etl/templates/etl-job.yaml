@@ -48,6 +48,9 @@ spec:
                 secretName: ssh-pubkey
             - name: etl-mapping
               configMap:
+                name: etl-mapping
+            - name: etl-mapping-test
+              configMap:
                 name: etl-mapping-test
             - name: useryaml
               configMap:
@@ -228,7 +231,7 @@ spec:
                   readOnly: true
                   mountPath: "/gen3/tube/settings.py"
                   subPath: settings.py
-                - name: etl-mapping
+                - name: etl-mapping-test
                   readOnly: true
                   mountPath: "/gen3/tube/etlMapping.yaml"
                   subPath: etlMapping.yaml
