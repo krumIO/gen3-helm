@@ -233,7 +233,7 @@ spec:
                   subPath: settings.py
                 - name: etl-mapping-test
                   readOnly: true
-                  mountPath: "/gen3/tube/etlMapping.yaml"
+                  mountPath: "/gen3/tube/"
                   subPath: etlMapping.yaml
                 - name: useryaml
                   mountPath: "/gen3/tube/user.yaml"
