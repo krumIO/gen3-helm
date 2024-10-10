@@ -224,15 +224,15 @@ spec:
                 - mountPath: /usr/share/pod
                   name: signal-volume
                 - name: etl-mapping
-                  readOnly: true
+                  readOnly: false
                   mountPath: "/tube/tube/settings.py"
                   subPath: settings.py
                 - name: etl-mapping
-                  readOnly: true
+                  readOnly: false
                   mountPath: "/gen3/tube/settings.py"
                   subPath: settings.py
                 - name: etl-mapping-test
-                  readOnly: true
+                  readOnly: false
                   mountPath: "/gen3/tube/"
                   subPath: etlMapping.yaml
                 - name: useryaml
