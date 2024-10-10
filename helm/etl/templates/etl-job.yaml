@@ -48,7 +48,7 @@ spec:
                 secretName: ssh-pubkey
             - name: etl-mapping
               configMap:
-                name: etl-mapping
+                name: etl-mapping-test
             - name: useryaml
               configMap:
                 name: useryaml
