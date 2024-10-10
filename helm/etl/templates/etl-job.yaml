@@ -52,6 +52,10 @@ spec:
             - name: etl-mapping-test
               configMap:
                 name: etl-mapping-test
+                defaultMode: 420
+                items:
+                - key: etlMapping.yaml
+                  path: etlMapping.yaml
             - name: useryaml
               configMap:
                 name: useryaml
@@ -224,16 +228,16 @@ spec:
                 - mountPath: /usr/share/pod
                   name: signal-volume
                 - name: etl-mapping
-                  readOnly: false
+                  readOnly: true
                   mountPath: "/tube/tube/settings.py"
                   subPath: settings.py
                 - name: etl-mapping
-                  readOnly: false
+                  readOnly: true
                   mountPath: "/gen3/tube/settings.py"
                   subPath: settings.py
                 - name: etl-mapping-test
-                  readOnly: false
-                  mountPath: "/gen3/tube/"
+                  readOnly: true
+                  mountPath: "/gen3/tube/etlMapping.yaml"
                   subPath: etlMapping.yaml
                 - name: useryaml
                   mountPath: "/gen3/tube/user.yaml"
