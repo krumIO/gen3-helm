@@ -139,20 +139,24 @@
         "chartType": "count",
         "title": "Projects"
       },
+      "patient_id": {
+        "chartType": "count",
+        "title": "Patients"
+      },
       "impdsex": {
-        "chartType": "pie",
+        "chartType": "fullPie",
         "title": "Biological Sex"
       },
       "impd_edulevel": {
-        "chartType": "pie",
+        "chartType": "bar",
         "title": "Education"
       },
       "impd_empstat": {
-        "chartType": "bar",
+        "chartType": "fullPie",
         "title": "Employment"
       },
       "impd_incmlvl": {
-        "chartType": "pie",
+        "chartType": "bar",
         "title": "Income"
       }
     },
@@ -177,7 +181,7 @@
     "buttons": [],
     "guppyConfig": {
       "dataType": "pb_impowr_demographics",
-      "nodeCountTitle": "Patients",
+      "nodeCountTitle": "Demographic Responses",
       "fieldMapping": [
         { "field": "disease_type", "name": "Disease type" },
         { "field": "primary_site", "name": "Site where samples were collected"}
