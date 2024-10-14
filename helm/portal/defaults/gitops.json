@@ -141,11 +141,19 @@
       },
       "impdsex": {
         "chartType": "pie",
-        "title": "Gender"
+        "title": "Biological Sex"
       },
-      "impd_race": {
+      "impd_edulevel": {
+        "chartType": "pie",
+        "title": "Education"
+      },
+      "impd_empstat": {
         "chartType": "bar",
-        "title": "Race"
+        "title": "Employment"
+      },
+      "impd_incmlvl": {
+        "chartType": "pie",
+        "title": "Income"
       }
     },
     "filters": {
@@ -155,7 +163,9 @@
           "fields":[
             "project_id",
             "impdsex",
-            "impd_race"
+            "impd_edulevel",
+            "impd_empstat",
+            "impd_incmlvl"
           ]
         }
       ]
