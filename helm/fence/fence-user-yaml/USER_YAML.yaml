@@ -679,21 +679,22 @@ users:
   david@krum.io:
     admin: true
     policies:
-    - open_data_admin
+    - audit_reader
     - data_upload
-    - workspace
     - dashboard
-    - mds_admin
-    - prometheus
-    - sower
-    - services.sheepdog-admin
-    - services.peregrine-admin
-    - programs.sim-admin
-    - programs.krum-admin
-    - programs.wake-admin
-    - programs.dev-admin
     - indexd_admin
+    - mds_admin
+    - open_data_admin
+    - programs.dev-admin
+    - programs.krum-admin
+    - programs.sim-admin
+    - programs.wake-admin
+    - prometheus
+    - services.peregrine-admin
+    - services.sheepdog-admin
+    - sower
     - ttyadmin
+    - workspace
     projects:
     - auth_id: GEN
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
