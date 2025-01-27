@@ -42,7 +42,7 @@
           "name": "View Dashboards",
           "icon": "data-explore",
           "body": "IMPOWR uses Kibana for extensive visualization and dashboarding capabilities.  View predefined, managed dashboards or build your own!",
-          "link": "https://kibana.heal.krum.app/",
+          "link": "/kibana",
           "label": "View Dashboards"
         },
         {
