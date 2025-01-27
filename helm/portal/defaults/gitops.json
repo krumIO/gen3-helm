@@ -39,6 +39,13 @@
           "label": "Explore data"
         },
         {
+          "name": "View Dashboards",
+          "icon": "data-explore",
+          "body": "IMPOWR uses Kibana for extensive visualization and dashboarding capabilities.  View predefined, managed dashboards or build your own!",
+          "link": "https://kibana.heal.krum.app/",
+          "label": "View Dashboards"
+        },
+        {
           "name": "Access Data",
           "icon": "data-access",
           "body": "Use our selected tool to filter out the data you need.",
