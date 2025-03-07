@@ -842,7 +842,33 @@ users:
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: IMPOWR
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
-
+  0000-0001-5035-3582: # cara
+    admin: true
+    policies:
+    - open_data_admin
+    - data_upload
+    - workspace
+    - dashboard
+    - mds_admin
+    - prometheus
+    - sower
+    - programs.sim-admin
+    - programs.wake-admin
+    - indexd_admin
+    - ttyadmin
+    - services.sheepdog-admin
+    - services.peregrine-admin
+    - programs.krum-admin
+    - programs.IMPOWR-admin
+    projects:
+    - auth_id: wakeONE
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: wakeTWO
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: wakeTHREE
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: IMPOWR
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
   0000-0002-3969-4279: # meredith
     admin: true
     policies:
