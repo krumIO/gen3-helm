@@ -20,6 +20,7 @@ authz:
   all_users_policies: ['open_data_reader', 'programs.sim-reader']
   user_project_to_resource:
     IMPOWR: /programs/IMPOWR
+    MIRHIQL: /programs/MIRHIQL
     sim: /programs/sim
     GEN: /programs/sim/projects/GEN
     DEV: /programs/sim
@@ -152,6 +153,16 @@ authz:
         - 'storage_reader'
       resource_paths:
         - '/programs/IMPOWR'
+    - id: 'programs.MIRHIQL-admin'
+      description: ''
+      role_ids:
+        - 'creator'
+        - 'reader'
+        - 'updater'
+        - 'deleter'
+        - 'storage_reader'
+      resource_paths:
+        - '/programs/MIRHIQL'
     - id: 'programs.krum-admin'
       description: ''
       role_ids:
@@ -272,6 +283,13 @@ authz:
                 - name: 'you'
                 - name: 'treetop'
                 - name: 'nm'
+        - name: 'MIRHIQL'
+          subresources:
+            - name: 'projects'
+              subresources:
+                - name: 'musc'
+                - name: 'stanford'
+                - name: 'utah'
         - name: 'krum'
           subresources:
             - name: 'projects'
@@ -294,6 +312,13 @@ authz:
                     - name: 'you'
                     - name: 'treetop'
                     - name: 'nm'
+            - name: 'MIRHIQL'
+              subresources:
+                - name: 'projects'
+                  subresources:
+                    - name: 'musc'
+                    - name: 'stanford'
+                    - name: 'utah'
             - name: 'sim'
               subresources:
                 - name: 'projects'
@@ -639,8 +664,11 @@ users:
     # - services.sheepdog-admin
     # - services.peregrine-admin
     - programs.IMPOWR-admin
+    - programs.MIRHIQL-admin
     projects:
     - auth_id: IMPOWR
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: MIRHIQL
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
   hunter@krum.io:
     admin: true
@@ -811,8 +839,11 @@ users:
     # - services.sheepdog-admin
     # - services.peregrine-admin
     - programs.IMPOWR-admin
+    - programs.MIRHIQL-admin
     projects:
     - auth_id: IMPOWR
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: MIRHIQL
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
 
   Vithal.madhira@palilasoftware.com:
@@ -833,6 +864,7 @@ users:
     - services.peregrine-admin
     - programs.krum-admin
     - programs.IMPOWR-admin
+    - programs.MIRHIQL-admin
     projects:
     - auth_id: wakeONE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
@@ -841,6 +873,8 @@ users:
     - auth_id: wakeTHREE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: IMPOWR
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: MIRHIQL
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
   0000-0001-5035-3582: # cara
     admin: true
@@ -860,6 +894,7 @@ users:
     - services.peregrine-admin
     - programs.krum-admin
     - programs.IMPOWR-admin
+    - programs.MIRHIQL-admin
     projects:
     - auth_id: wakeONE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
@@ -868,6 +903,8 @@ users:
     - auth_id: wakeTHREE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: IMPOWR
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: MIRHIQL
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
   0000-0002-3969-4279: # meredith
     admin: true
@@ -887,6 +924,7 @@ users:
     - services.peregrine-admin
     - programs.krum-admin
     - programs.IMPOWR-admin
+    - programs.MIRHIQL-admin
     projects:
     - auth_id: wakeONE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
@@ -895,6 +933,8 @@ users:
     - auth_id: wakeTHREE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: IMPOWR
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: MIRHIQL
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
   Meredith.Adams@wakehealth.edu:
     admin: true
@@ -914,6 +954,7 @@ users:
     - services.peregrine-admin
     - programs.krum-admin
     - programs.IMPOWR-admin
+    - programs.MIRHIQL-admin
     projects:
     - auth_id: wakeONE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
@@ -922,4 +963,6 @@ users:
     - auth_id: wakeTHREE
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
     - auth_id: IMPOWR
+      privilege: [create, read, update, delete, upload, read-storage. write-storage]
+    - auth_id: MIRHIQL
       privilege: [create, read, update, delete, upload, read-storage. write-storage]
